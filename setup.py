@@ -16,7 +16,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "pyparsing>=2.1.8",
+        "pyahocorasick>=1.1.6",
+        "pycountry>=17.9.23",
+        "unidecode>=1.0.22",
     ],
     setup_requires=[
         "nose>=1.3.7",
