@@ -12,4 +12,4 @@ To install, simply install this package via pip into your desired virtualenv, e.
 
 ## Usage
 
-See [examples/](./examples/) for usage examples.
+See [tests/](./pystreet/tests/) for usage examples.
