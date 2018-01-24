@@ -5,12 +5,7 @@ Street address validators.
 import re
 from abc import ABCMeta, abstractmethod
 
-from pystreet.automaton import (
-        boundary_check,
-        build_automaton,
-        match_automaton,
-        normalize,
-)
+from pystreet.automaton import boundary_check, build_automaton, match_automaton, normalize
 from pystreet.data import iter_country_names, iter_subdivision_names
 
 
