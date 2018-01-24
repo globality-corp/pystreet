@@ -5,8 +5,13 @@ Street address validators.
 import re
 from abc import ABCMeta, abstractmethod
 
-from pystreet.automaton import boundary_check, build_automaton, normalize
-from pystreet.data import iter_country_names
+from pystreet.automaton import (
+        boundary_check,
+        build_automaton,
+        match_automaton,
+        normalize,
+)
+from pystreet.data import iter_country_names, iter_subdivision_names
 
 
 NONSTRICT_REGEXP = re.compile(
@@ -37,7 +42,13 @@ class AddressValidator(metaclass=ABCMeta):
 
 class NonstrictAddressValidator(AddressValidator):
 
-    def __init__(self, boundary_check=boundary_check, regexp=NONSTRICT_REGEXP):
+    def __init__(
+        self,
+        require_country,
+        require_subdivision,
+        boundary_check=boundary_check,
+        regexp=NONSTRICT_REGEXP,
+    ):
         """
         Non-strict street address validation.
         This validator is applicable in the broadest scope of global street address
@@ -52,9 +63,15 @@ class NonstrictAddressValidator(AddressValidator):
           of numeric and alphabetical tokens in string.
 
         """
-        self.automaton = build_automaton(vocabulary=iter_country_names())
+        self.require_country = require_country
+        self.require_subdivision = require_subdivision
         self.boundary_check = boundary_check
         self.regexp = regexp
+
+        if self.require_country:
+            self.country_automaton = build_automaton(vocabulary=iter_country_names())
+        if self.require_subdivision:
+            self.subdivision_automaton = build_automaton(vocabulary=iter_subdivision_names())
 
     def validate(self, string):
         normalized = normalize(string)
@@ -62,19 +79,23 @@ class NonstrictAddressValidator(AddressValidator):
             # Try to minimally identify address-like substructure first
             raise ValueError(f"Could not identify an address-like substructure in string: {string}")
 
-        for end_position, (length, *tail) in self.automaton.iter(normalized):
-            end_idx = end_position + 1
-            start_idx = end_idx - length
+        if (
+            self.require_country and
+            not match_automaton(normalized, self.country_automaton, self.boundary_check)
+        ):
+            raise ValueError(f"Could not find a country mention in string: {string}")
 
-            if not self.boundary_check(string, start_idx, end_idx):
-                # Make sure string match aligns with word boundaries
-                continue
+        if (
+            self.require_subdivision and
+            not match_automaton(normalized, self.subdivision_automaton, self.boundary_check)
+        ):
+            raise ValueError(f"Could not find a country subdivision mention in string: {string}")
 
-            # If we reached here, can short circuit and verify address
-            return True
-
-        raise ValueError(f"Could not find a country mention in string: {string}")
+        return True
 
 
-def nonstrict_address_validator():
-    return NonstrictAddressValidator()
+def nonstrict_address_validator(require_country=True, require_subdivision=False):
+    return NonstrictAddressValidator(
+        require_country=require_country,
+        require_subdivision=require_subdivision,
+    )

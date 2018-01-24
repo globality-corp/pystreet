@@ -44,3 +44,24 @@ def boundary_check(string, start_idx, end_idx):
     )
 
     return (start_clause and end_clause)
+
+
+def match_automaton(string, automaton, boundary_check=None):
+    """
+    See if can match string to string matching automaton.
+    This is aided by a boundary check callable which helps ascertain
+    whether the matched substring occurs within some boundaries (e.g. token boundaries).
+
+    """
+    for end_position, (length, *tail) in automaton.iter(string):
+        end_idx = end_position + 1
+        start_idx = end_idx - length
+
+        if boundary_check and not boundary_check(string, start_idx, end_idx):
+            # Make sure string match aligns with word boundaries
+            continue
+
+        # If we reached here, can short circuit
+        return True
+
+    return False
