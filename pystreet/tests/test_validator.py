@@ -14,7 +14,7 @@ from pystreet.validator import nonstrict_address_validator
     ("Signor Paolo Gaspari Enterprise Hotel CORSO SEMPIONE 91 20149 MILANO MI ITALY", True, True),
     ("8 Homewood Pl #100, Menlo Park, CA 94025 United States", True, True),
     ("560 Mission St #1200, San Francisco, CA 94105 USA", True, True),
-    ("2301 Calvert St NW, Washington, DC, United States of America", True, True)
+    ("2301 Calvert St NW, Washington, DC, United States of America", True, True),
 ])
 def test_nonstrict_validator_on_valid_cases(string, require_country, require_subdivision):
     validator = nonstrict_address_validator(

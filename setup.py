@@ -16,6 +16,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        "googlemaps>=2.5.1",
         "pyahocorasick>=1.1.6",
         "pycountry>=17.9.23",
         "unidecode>=1.0.22",
