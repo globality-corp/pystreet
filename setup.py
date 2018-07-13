@@ -20,13 +20,13 @@ setup(
         "pyahocorasick>=1.1.6",
         "pycountry>=17.9.23",
         "unidecode>=1.0.22",
+        "parameterized>=0.6.1",
     ],
     setup_requires=[
         "nose>=1.3.7",
     ],
     tests_require=[
         "coverage>=3.7.1",
-        "parameterized>=0.6.1",
         "PyHamcrest>=1.9.0",
     ],
 )
