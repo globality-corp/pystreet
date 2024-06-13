@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 
 project = "pystreet"
-version = "0.3.0"
+version = "1.0.0"
 
 setup(
     name=project,
@@ -20,13 +20,35 @@ setup(
         "pyahocorasick>=1.1.6",
         "pycountry>=17.9.23",
         "unidecode>=1.0.22",
+        "parameterized>=0.6.1",
     ],
     setup_requires=[
-        "nose>=1.3.7",
     ],
     tests_require=[
         "coverage>=3.7.1",
-        "parameterized>=0.6.1",
         "PyHamcrest>=1.9.0",
     ],
+    extras_require={
+        "test": [
+            "aws-encryption-sdk>=2.0.0",
+            "cryptography>=35",
+            "coverage>=3.7.1",
+            "PyHamcrest>=1.8.5",
+            "pytest-cov>=3.0.0",
+            "pytest>=6.2.5",
+            "pytest-cov>=5.0.0",
+        ],
+        "lint": [
+            "flake8",
+            "flake8-print",
+            "flake8-isort",
+        ],
+        "typehinting": [
+            "mypy",
+            "types-psycopg2",
+            "types-python-dateutil",
+            "types-pytz",
+            "types-setuptools",
+        ],
+    },
 )
